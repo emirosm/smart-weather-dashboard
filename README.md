@@ -27,3 +27,4 @@ It shows real-time weather, 5-day forecasts with charts, recent searches, and fa
 ```bash
 npm install
 npm run dev
+```
