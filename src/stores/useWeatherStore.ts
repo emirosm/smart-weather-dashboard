@@ -9,6 +9,10 @@ interface WeatherStore {
   theme: "light" | "dark";
   chartType: "temp" | "humidity" | "wind";
   recentSearches: string[];
+  favourites: string[];
+  addFavourite: (city: string) => void;
+  removeFavourite: (city: string) => void;
+  isFavourite: (city: string) => boolean;
   setCity: (city: string) => void;
   setCoordinates: (coords: { lat: number; lon: number }) => void;
   resetCoordinates: () => void;
@@ -19,13 +23,35 @@ interface WeatherStore {
   addRecentSearch: (city: string) => void;
 }
 
-export const useWeatherStore = create<WeatherStore>((set) => ({
+export const useWeatherStore = create<WeatherStore>((set, get) => ({
   city: "",
   coordinates: null,
   unit: "metric",
   theme: "light",
   chartType: "temp",
   recentSearches: JSON.parse(localStorage.getItem("recentSearches") || "[]"),
+  favourites: JSON.parse(
+    localStorage.getItem("favourites") || "[]"
+  ) as string[],
+  addFavourite: (city) =>
+    set((state) => {
+      const updated = [...new Set([city, ...state.favourites])].slice(0, 10);
+      localStorage.setItem("favourites", JSON.stringify(updated));
+      return { favourites: updated };
+    }),
+
+  removeFavourite: (city) =>
+    set((state) => {
+      const updated = state.favourites.filter(
+        (c) => c.toLowerCase() !== city.toLowerCase()
+      );
+      localStorage.setItem("favourites", JSON.stringify(updated));
+      return { favourites: updated };
+    }),
+
+  isFavourite: (city) =>
+    get().favourites.some((c) => c.toLowerCase() === city.toLowerCase()),
+
   setUnit: (unit) => set({ unit }),
   toggleTheme: () =>
     set((state) => ({
@@ -45,7 +71,7 @@ export const useWeatherStore = create<WeatherStore>((set) => ({
       localStorage.setItem("recentSearches", JSON.stringify(sliced));
       return { recentSearches: sliced };
     }),
-  setCity: (city) => set({ city, coordinates: null }), 
+  setCity: (city) => set({ city, coordinates: null }),
   setCoordinates: (coords) => set({ coordinates: coords, city: "" }),
   resetCoordinates: () => set({ coordinates: null }),
   resetCity: () => set({ city: "" }),

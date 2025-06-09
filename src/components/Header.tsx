@@ -24,6 +24,12 @@ export default function Header() {
           >
             Favourites
           </Link>
+          <Link
+            to="/about"
+            className="text-gray-600 dark:text-gray-300 hover:underline"
+          >
+            About
+          </Link>
         </nav>
         <div className="flex items-center gap-4">
           <button
