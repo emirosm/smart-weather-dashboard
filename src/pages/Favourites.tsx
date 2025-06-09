@@ -12,7 +12,8 @@ export default function Favourites() {
 
   const { data: weatherData, isLoading } = useQuery<WeatherResponse[]>({
     queryKey: ["weather", favourites, unit],
-    queryFn: () => Promise.all(favourites.map(city => fetchWeatherByCity(city, unit))),
+    queryFn: () =>
+      Promise.all(favourites.map((city) => fetchWeatherByCity(city, unit))),
     enabled: favourites.length > 0,
   });
 
@@ -20,8 +21,12 @@ export default function Favourites() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Favourites</h2>
-          <p className="text-gray-600 dark:text-gray-400">No favourite locations added yet.</p>
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            Favourites
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            No favourite locations added yet.
+          </p>
         </div>
       </div>
     );
@@ -31,7 +36,9 @@ export default function Favourites() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Favourites</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            Favourites
+          </h2>
           <LoadingSpinner size="lg" className="my-8" />
         </div>
       </div>
@@ -41,7 +48,9 @@ export default function Favourites() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Favourites</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+          Favourites
+        </h2>
         <div className="grid gap-4">
           {weatherData?.map((data) => (
             <WeatherCard key={data.name} data={data} />

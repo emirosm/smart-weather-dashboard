@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { Theme } from '../types/weather';
+import { create } from "zustand";
+import type { Theme } from "../types/weather";
 
 interface ThemeStore {
   theme: Theme;
@@ -8,12 +8,12 @@ interface ThemeStore {
 }
 
 export const useThemeStore = create<ThemeStore>((set) => ({
-  theme: (localStorage.getItem('theme') as Theme) || 'light',
+  theme: (localStorage.getItem("theme") as Theme) || "light",
   toggleTheme: () =>
     set((state) => {
-      const newTheme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
+      const newTheme = state.theme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
       return { theme: newTheme };
     }),
   setTheme: (theme) => set({ theme }),
-})); 
+}));

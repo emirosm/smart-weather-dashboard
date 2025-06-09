@@ -15,7 +15,11 @@ export function useWeatherQuery() {
         return fetchWeatherByCity(city, unit);
       }
       if (coordinates) {
-        return fetchWeatherByCoordinates(coordinates.lat,coordinates.lon, unit);
+        return fetchWeatherByCoordinates(
+          coordinates.lat,
+          coordinates.lon,
+          unit,
+        );
       }
       throw new Error("No location provided");
     },

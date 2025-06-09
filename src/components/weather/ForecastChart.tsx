@@ -7,31 +7,36 @@ export default function ForecastChart() {
   const { unit, chartType } = usePreferencesStore();
 
   if (isLoading) return <LoadingSpinner size="lg" className="my-8" />;
-  if (isError) return <p className="text-red-500">Error: {(error as Error).message}</p>;
+  if (isError)
+    return <p className="text-red-500">Error: {(error as Error).message}</p>;
   if (!data) return null;
 
   // Filter data to show every 6 hours (every 2nd item since data is every 3 hours)
   const chartData = data.list
     .filter((_, index) => index % 3 === 0)
     .map((item) => ({
-      time: new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      value: chartType === 'temp' 
-        ? item.main.temp 
-        : chartType === 'humidity' 
-          ? item.main.humidity 
-          : item.wind.speed
+      time: new Date(item.dt * 1000).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      value:
+        chartType === "temp"
+          ? item.main.temp
+          : chartType === "humidity"
+            ? item.main.humidity
+            : item.wind.speed,
     }));
 
   const getChartTitle = () => {
     switch (chartType) {
-      case 'temp':
-        return `Temperature (°${unit === 'metric' ? 'C' : 'F'})`;
-      case 'humidity':
-        return 'Humidity (%)';
-      case 'wind':
-        return 'Wind Speed (m/s)';
+      case "temp":
+        return `Temperature (°${unit === "metric" ? "C" : "F"})`;
+      case "humidity":
+        return "Humidity (%)";
+      case "wind":
+        return "Wind Speed (m/s)";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -43,29 +48,36 @@ export default function ForecastChart() {
   const chartHeight = height - margin.top - margin.bottom;
 
   // Calculate scales
-  const xScale = (index: number) => margin.left + (index * (chartWidth / (chartData.length - 1)));
+  const xScale = (index: number) =>
+    margin.left + index * (chartWidth / (chartData.length - 1));
   const yScale = (value: number) => {
-    const min = Math.min(...chartData.map(d => d.value));
-    const max = Math.max(...chartData.map(d => d.value));
+    const min = Math.min(...chartData.map((d) => d.value));
+    const max = Math.max(...chartData.map((d) => d.value));
     const range = max - min;
-    return margin.top + chartHeight - ((value - min) / range * chartHeight);
+    return margin.top + chartHeight - ((value - min) / range) * chartHeight;
   };
 
   // Generate Y-axis labels
-  const min = Math.min(...chartData.map(d => d.value));
-  const max = Math.max(...chartData.map(d => d.value));
+  const min = Math.min(...chartData.map((d) => d.value));
+  const max = Math.max(...chartData.map((d) => d.value));
   const range = max - min;
   const yTicks = 5;
   const yLabels = Array.from({ length: yTicks }, (_, i) => {
-    const value = min + (range * i / (yTicks - 1));
+    const value = min + (range * i) / (yTicks - 1);
     return value.toFixed(1);
   });
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded shadow p-6">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{getChartTitle()}</h3>
+      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+        {getChartTitle()}
+      </h3>
       <div className="relative" style={{ width, height }}>
-        <svg width={width} height={height} className="text-gray-900 dark:text-white">
+        <svg
+          width={width}
+          height={height}
+          className="text-gray-900 dark:text-white"
+        >
           {/* Y-axis line */}
           <line
             x1={margin.left}
@@ -78,7 +90,7 @@ export default function ForecastChart() {
 
           {/* Y-axis labels */}
           {yLabels.map((label, i) => {
-            const y = margin.top + (chartHeight * i / (yTicks - 1));
+            const y = margin.top + (chartHeight * i) / (yTicks - 1);
             return (
               <g key={i}>
                 <line
@@ -116,15 +128,10 @@ export default function ForecastChart() {
           {chartData.map((point, index) => {
             const x = xScale(index);
             const y = yScale(point.value);
-            
+
             return (
               <g key={index}>
-                <circle
-                  cx={x}
-                  cy={y}
-                  r="4"
-                  fill="currentColor"
-                />
+                <circle cx={x} cy={y} r="4" fill="currentColor" />
                 {index > 0 && (
                   <line
                     x1={xScale(index - 1)}
@@ -151,4 +158,4 @@ export default function ForecastChart() {
       </div>
     </div>
   );
-} 
+}

@@ -48,9 +48,9 @@ export interface ForecastResponse {
   };
 }
 
-export type Unit = 'metric' | 'imperial';
-export type Theme = 'light' | 'dark';
-export type ChartType = 'temp' | 'humidity' | 'wind';
+export type Unit = "metric" | "imperial";
+export type Theme = "light" | "dark";
+export type ChartType = "temp" | "humidity" | "wind";
 
 export interface Coordinates {
   lat: number;

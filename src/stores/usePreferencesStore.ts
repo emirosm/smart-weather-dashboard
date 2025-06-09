@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { Unit, ChartType } from '../types/weather';
+import { create } from "zustand";
+import type { Unit, ChartType } from "../types/weather";
 
 interface PreferencesStore {
   unit: Unit;
@@ -9,8 +9,8 @@ interface PreferencesStore {
 }
 
 export const usePreferencesStore = create<PreferencesStore>((set) => ({
-  unit: 'metric',
-  chartType: 'temp',
+  unit: "metric",
+  chartType: "temp",
   setUnit: (unit) => set({ unit }),
   setChartType: (type) => set({ chartType: type }),
-})); 
+}));

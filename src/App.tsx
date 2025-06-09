@@ -4,7 +4,7 @@ import { AppWithTheme } from "./components/layout/AppWithTheme";
 import Header from "./components/layout/Header";
 import Home from "./pages/Home";
 import Favourites from "./pages/Favourites";
-import About from './pages/About';
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 

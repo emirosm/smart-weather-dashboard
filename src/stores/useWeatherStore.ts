@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Coordinates } from '../types/weather';
+import type { Coordinates } from "../types/weather";
 
 interface WeatherStore {
   city: string;
@@ -20,7 +20,9 @@ export const useWeatherStore = create<WeatherStore>((set, get) => ({
   city: "",
   coordinates: null,
   recentSearches: JSON.parse(localStorage.getItem("recentSearches") || "[]"),
-  favourites: JSON.parse(localStorage.getItem("favourites") || "[]") as string[],
+  favourites: JSON.parse(
+    localStorage.getItem("favourites") || "[]",
+  ) as string[],
 
   addFavourite: (city) =>
     set((state) => {
@@ -32,7 +34,7 @@ export const useWeatherStore = create<WeatherStore>((set, get) => ({
   removeFavourite: (city) =>
     set((state) => {
       const updated = state.favourites.filter(
-        (c) => c.toLowerCase() !== city.toLowerCase()
+        (c) => c.toLowerCase() !== city.toLowerCase(),
       );
       localStorage.setItem("favourites", JSON.stringify(updated));
       return { favourites: updated };
@@ -46,7 +48,7 @@ export const useWeatherStore = create<WeatherStore>((set, get) => ({
       const updated = [
         city,
         ...state.recentSearches.filter(
-          (c) => c.toLowerCase() !== city.toLowerCase()
+          (c) => c.toLowerCase() !== city.toLowerCase(),
         ),
       ];
       const sliced = updated.slice(0, 5);

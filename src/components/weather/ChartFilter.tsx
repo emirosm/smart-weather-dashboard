@@ -1,7 +1,7 @@
 import { usePreferencesStore } from "../../stores/usePreferencesStore";
 import type { ChartType } from "../../types/weather";
 
-const options: ChartType[] = ['temp', 'humidity', 'wind'];
+const options: ChartType[] = ["temp", "humidity", "wind"];
 
 export default function ChartFilter() {
   const { chartType, setChartType } = usePreferencesStore();
@@ -14,8 +14,8 @@ export default function ChartFilter() {
           onClick={() => setChartType(option)}
           className={`px-4 py-2 rounded ${
             chartType === option
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
           }`}
         >
           {option.charAt(0).toUpperCase() + option.slice(1)}
@@ -23,4 +23,4 @@ export default function ChartFilter() {
       ))}
     </div>
   );
-} 
+}

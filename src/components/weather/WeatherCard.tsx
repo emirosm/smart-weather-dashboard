@@ -24,7 +24,9 @@ export default function WeatherCard({ data }: WeatherCardProps) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded shadow p-6 text-center">
-      <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{data.name}</h2>
+      <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
+        {data.name}
+      </h2>
       <button
         onClick={handleToggleFavourite}
         className="text-sm mt-2 text-blue-600 dark:text-blue-400 hover:underline"
@@ -39,12 +41,16 @@ export default function WeatherCard({ data }: WeatherCardProps) {
         alt={weather.description}
         className="mx-auto"
       />
-      <p className="text-4xl text-gray-900 dark:text-white">{data.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
-      <p className="capitalize text-gray-700 dark:text-gray-300">{weather.description}</p>
+      <p className="text-4xl text-gray-900 dark:text-white">
+        {data.main.temp}°{unit === "metric" ? "C" : "F"}
+      </p>
+      <p className="capitalize text-gray-700 dark:text-gray-300">
+        {weather.description}
+      </p>
       <div className="text-sm mt-2 text-gray-600 dark:text-gray-300">
         <p>Humidity: {data.main.humidity}%</p>
         <p>Wind: {data.wind.speed} m/s</p>
       </div>
     </div>
   );
-} 
+}

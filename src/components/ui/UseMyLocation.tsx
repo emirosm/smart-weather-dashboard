@@ -15,7 +15,7 @@ export default function UseMyLocation() {
         (error) => {
           console.error("Error getting location:", error);
           alert("Error getting your location. Please try again.");
-        }
+        },
       );
     } else {
       alert("Geolocation is not supported by your browser");
@@ -30,4 +30,4 @@ export default function UseMyLocation() {
       Use My Location
     </button>
   );
-} 
+}

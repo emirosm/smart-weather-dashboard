@@ -8,7 +8,9 @@ export default function RecentSearches() {
 
   return (
     <div className="mb-4">
-      <h3 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Recent Searches</h3>
+      <h3 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
+        Recent Searches
+      </h3>
       <div className="flex flex-wrap gap-2">
         {recentSearches.map((city) => (
           <button
@@ -22,4 +24,4 @@ export default function RecentSearches() {
       </div>
     </div>
   );
-} 
+}

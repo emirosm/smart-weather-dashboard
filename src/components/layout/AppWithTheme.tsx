@@ -23,4 +23,4 @@ export function AppWithTheme({ children }: AppWithThemeProps) {
   }, [theme]);
 
   return <>{children}</>;
-} 
+}
