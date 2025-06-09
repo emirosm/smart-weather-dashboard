@@ -1,51 +1,53 @@
 import { useWeatherStore } from "../stores/useWeatherStore";
+import { usePreferencesStore } from "../stores/usePreferencesStore";
 import { useQuery } from "@tanstack/react-query";
 import { fetchWeatherByCity } from "../api/weather";
 import type { WeatherResponse } from "../types/weather";
-
-function FavouriteCard({ city }: { city: string }) {
-  const { data, isLoading, isError } = useQuery<WeatherResponse>({
-    queryKey: ["weather-fav", city],
-    queryFn: () => fetchWeatherByCity(city),
-    staleTime: 1000 * 60 * 10,
-  });
-
-  if (isLoading) return <p>Loading {city}...</p>;
-  if (isError || !data) return <p>Error loading {city}</p>;
-
-  const weather = data.weather[0]; // contains main, description, icon
-
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded shadow p-4 w-full max-w-md flex items-center justify-between">
-      <div>
-        <h2 className="text-xl font-bold">{data.name}</h2>
-        <p className="text-3xl">{data.main.temp}°</p>
-        <p className="capitalize">{weather.description}</p>
-      </div>
-      <img
-        src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-        alt={weather.description}
-        className="w-16 h-16"
-      />
-    </div>
-  );
-}
+import WeatherCard from "../components/weather/WeatherCard";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 export default function Favourites() {
   const favourites = useWeatherStore((s) => s.favourites);
+  const unit = usePreferencesStore((s) => s.unit);
+
+  const { data: weatherData, isLoading } = useQuery<WeatherResponse[]>({
+    queryKey: ["weather", favourites, unit],
+    queryFn: () => Promise.all(favourites.map(city => fetchWeatherByCity(city, unit))),
+    enabled: favourites.length > 0,
+  });
+
+  if (favourites.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Favourites</h2>
+          <p className="text-gray-600 dark:text-gray-400">No favourite locations added yet.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Favourites</h2>
+          <LoadingSpinner size="lg" className="my-8" />
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 space-y-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold">⭐ Favourite Locations</h1>
-      {favourites.length === 0 ? (
-        <p>You have no favourite cities yet.</p>
-      ) : (
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Favourites</h2>
         <div className="grid gap-4">
-          {favourites.map((city) => (
-            <FavouriteCard key={city} city={city} />
+          {weatherData?.map((data) => (
+            <WeatherCard key={data.name} data={data} />
           ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -1,11 +1,16 @@
-import { useWeatherQuery } from "../hooks/useWeatherQuery";
-import { useWeatherStore } from "../stores/useWeatherStore";
+import { useWeatherStore } from "../../stores/useWeatherStore";
+import { usePreferencesStore } from "../../stores/usePreferencesStore";
+import type { WeatherResponse } from "../../types/weather";
 
-export default function WeatherCard() {
-  const { data, isLoading, isError, error } = useWeatherQuery();
+interface WeatherCardProps {
+  data: WeatherResponse;
+}
+
+export default function WeatherCard({ data }: WeatherCardProps) {
   const isFavourite = useWeatherStore((s) => s.isFavourite);
   const addFavourite = useWeatherStore((s) => s.addFavourite);
   const removeFavourite = useWeatherStore((s) => s.removeFavourite);
+  const unit = usePreferencesStore((s) => s.unit);
 
   const handleToggleFavourite = () => {
     if (isFavourite(data.name)) {
@@ -15,19 +20,14 @@ export default function WeatherCard() {
     }
   };
 
-  if (!data) return null;
-  if (isLoading) return <p>Loading...</p>;
-  if (isError)
-    return <p className="text-red-500">Error: {(error as Error).message}</p>;
-
   const weather = data.weather[0];
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded shadow p-6 text-center">
-      <h2 className="text-xl font-bold mb-2">{data.name}</h2>
+      <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{data.name}</h2>
       <button
         onClick={handleToggleFavourite}
-        className="text-sm mt-2 text-blue-600 underline"
+        className="text-sm mt-2 text-blue-600 dark:text-blue-400 hover:underline"
       >
         {isFavourite(data.name)
           ? "★ Remove from Favourites"
@@ -39,12 +39,12 @@ export default function WeatherCard() {
         alt={weather.description}
         className="mx-auto"
       />
-      <p className="text-4xl">{data.main.temp}°</p>
-      <p className="capitalize">{weather.description}</p>
+      <p className="text-4xl text-gray-900 dark:text-white">{data.main.temp}°{unit === 'metric' ? 'C' : 'F'}</p>
+      <p className="capitalize text-gray-700 dark:text-gray-300">{weather.description}</p>
       <div className="text-sm mt-2 text-gray-600 dark:text-gray-300">
         <p>Humidity: {data.main.humidity}%</p>
         <p>Wind: {data.wind.speed} m/s</p>
       </div>
     </div>
   );
-}
+} 

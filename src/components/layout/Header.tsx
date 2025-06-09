@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { useWeatherStore } from "../stores/useWeatherStore";
+import { useThemeStore } from "../../stores/useThemeStore";
+import { usePreferencesStore } from "../../stores/usePreferencesStore";
 import { Moon, Sun } from "lucide-react";
 
 export default function Header() {
-  const toggleTheme = useWeatherStore((s) => s.toggleTheme);
-  const theme = useWeatherStore((s) => s.theme);
-  const unit = useWeatherStore((s) => s.unit);
-  const setUnit = useWeatherStore((s) => s.setUnit);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
+  const theme = useThemeStore((s) => s.theme);
+  const unit = usePreferencesStore((s) => s.unit);
+  const setUnit = usePreferencesStore((s) => s.setUnit);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow px-6 py-4">
@@ -53,4 +54,4 @@ export default function Header() {
       </div>
     </header>
   );
-}
+} 
